@@ -1,5 +1,4 @@
 // Tic Tac Toe Game
-
 function createGame(playerMarkers = { X: "X", O: "O" }) {
   let currentPlayer = "X"; // 'X' or 'O'
   const board = Array(9).fill("");
@@ -54,15 +53,18 @@ const playerXInput = document.getElementById("playerX");
 const playerOInput = document.getElementById("playerO");
 const startGameBtn = document.getElementById("startGameBtn");
 
-// Scores
+// Store player names
+let playerNames = { X: "Player X", O: "Player O" };
+
+// Score Tracking
 let scores = { X: 0, O: 0 };
 function updateScores() {
   xScoreDiv.querySelector(".score").textContent = scores.X;
   oScoreDiv.querySelector(".score").textContent = scores.O;
 }
 
-// Highlight Current Player
-function currentPlayer() {
+//Highlight Current Player
+function highlightCurrentPlayer() {
   const current = game.currentPlayer();
   if (current === "X") {
     xScoreDiv.style.backgroundColor = "rgba(255,255,255,0.3)";
@@ -73,26 +75,28 @@ function currentPlayer() {
   }
 }
 
-// Start game button
+// Start Game Button
 startGameBtn.addEventListener("click", () => {
-  const nameX = playerXInput.value.trim() || "Player X";
-  const nameO = playerOInput.value.trim() || "Player O";
+  playerNames.X = playerXInput.value.trim() || "Player X";
+  playerNames.O = playerOInput.value.trim() || "Player O";
 
-  // Player names only for the score divs
-  xScoreDiv.childNodes[0].nodeValue = `${nameX} `;
-  oScoreDiv.childNodes[0].nodeValue = `${nameO} `;
+  // Update divs
+  xScoreDiv.childNodes[0].nodeValue = `${playerNames.X}: `;
+  oScoreDiv.childNodes[0].nodeValue = `${playerNames.O}: `;
 
+  // Hide inputs
   document.querySelector(".player-names").style.display = "none";
+
   currentPlayer();
 });
 
-// Board Cell Clicks
+// board cells onclick
 cells.forEach((cell, index) => {
   cell.addEventListener("click", () => {
     const success = game.playMove(index);
     if (!success) return;
 
-    // X or O always shown
+    // Always X or O in board
     cell.textContent = game.getBoard()[index];
 
     const winner = game.checkWinner();
@@ -100,33 +104,37 @@ cells.forEach((cell, index) => {
       if (winner === "draw") {
         winnerDeclaration.textContent = "DRAW!";
       } else {
-        // Display winner's name in result
-        const winnerName = winner === "X" ? xScoreDiv.childNodes[0].nodeValue.slice(0, -2) 
-                                          : oScoreDiv.childNodes[0].nodeValue.slice(0, -2);
+        // Get winner name
+        const winnerName = winner === "X" ? playerNames.X : playerNames.O;
         winnerDeclaration.textContent = `${winnerName} wins!`;
 
-        // increment score
+        // Increment scores
         const winnerKey = winner === "X" ? "X" : "O";
         scores[winnerKey]++;
         updateScores();
       }
 
-      // setTimeout(() => {
-      //   game.resetGame();
-      //   cells.forEach(c => (c.textContent = ""));
-      //   winnerDeclaration.textContent = "";
-      //   currentPlayer();
-      // }, 1500);
+      setTimeout(() => {
+        game.resetGame();
+        cells.forEach(c => (c.textContent = ""));
+        winnerDeclaration.textContent = "";
+        currentPlayer();
+      }, 1500);
     }
 
     currentPlayer();
   });
 });
 
-// ---- Reset Button ----
+// Reset button
 resetBtn.addEventListener("click", () => {
   game.resetGame();
   cells.forEach(c => (c.textContent = ""));
   winnerDeclaration.textContent = "";
-  currentPlayer();
+  highlightCurrentPlayer();
+
+  // reset scores
+  scores.X = 0;
+  scores.O = 0;
+  updateScores();
 });
