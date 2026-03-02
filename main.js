@@ -79,8 +79,8 @@ startGameBtn.addEventListener("click", () => {
   const nameO = playerOInput.value.trim() || "Player O";
 
   // Player names only for the score divs
-  xScoreDiv.childNodes[0].nodeValue = `${nameX}: `;
-  oScoreDiv.childNodes[0].nodeValue = `${nameO}: `;
+  xScoreDiv.childNodes[0].nodeValue = `${nameX} `;
+  oScoreDiv.childNodes[0].nodeValue = `${nameO} `;
 
   document.querySelector(".player-names").style.display = "none";
   currentPlayer();

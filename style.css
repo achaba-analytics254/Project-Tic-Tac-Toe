@@ -103,11 +103,14 @@ body{
 }
 .scores .x-score,
 .scores .o-score{
+  display: flex;
+  justify-content: space-between;
   border: 1px solid #acacac;
   width: 100%;
   padding: 10px;
   border-radius: 8px;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
   color: #fff;
   cursor: pointer;
   border-bottom: none;
