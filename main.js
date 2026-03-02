@@ -119,7 +119,7 @@ cells.forEach((cell, index) => {
         cells.forEach(c => (c.textContent = ""));
         winnerDeclaration.textContent = "";
         currentPlayer();
-      }, 1500);
+      }, 3000);
     }
 
     currentPlayer();
